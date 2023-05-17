@@ -1,0 +1,36 @@
+<section>
+  <div class="container">
+
+    <div class="row mt-4">
+      <a href="/admin/add-product" class="btn btn-success ml-auto">add products</a>
+
+    </div>
+    <table class="table mt-5">
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">titile</th>
+          <th scope="col">catogery</th>
+          <th scope="col">decription</th>
+          <th scope="col">image</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each produtcs}}
+          <tr>
+            <th scope="row">1</th>
+            <td>{{this.name}}</td>
+            <td>{{this.catogery}}</td>
+            <td>{{this.decription}}</td>
+            <td><img
+                style="width: 50px; height:50px"
+                src="/public/product-images/{{this._id}}.jpg"
+                alt=""
+              />
+              </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>
