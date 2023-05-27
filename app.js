@@ -26,6 +26,9 @@ app.engine(
 
     layoutsDir: __dirname + "/views/layout/",
     parlialsDir: __dirname + "/views/parlials/",
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true
+    }
   })
 );
 
