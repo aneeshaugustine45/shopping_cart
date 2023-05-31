@@ -39,9 +39,10 @@ db.connect((err)=>{
   else
   console.log("database connected to port 27777");
 })
-
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
+app.use(express.static(__dirname+'/public'));
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

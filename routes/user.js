@@ -8,7 +8,7 @@ const { response } = require("../app");
 /* GET home page. */
 router.get("/", function (req, res, next) {
   productHelprer.getAllProducts().then((produtcs) => {
-    console.log(produtcs);
+    //console.log(produtcs);
     res.render("user/view-products", { produtcs });
   });
 });

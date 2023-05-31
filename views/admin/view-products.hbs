@@ -1,14 +1,12 @@
 <section>
   <div class="container">
-
     <div class="row mt-4">
-      <a href="/admin/add-product" class="btn btn-success ml-auto">add products</a>
-
+      <a href="/admin/add-product" class="btn btn-success ml-auto">add products</a
     </div>
     <table class="table mt-5">
       <thead>
         <tr>
-          <th scope="col">No</th>
+          <th scope="col">No :</th>
           <th scope="col">titile</th>
           <th scope="col">catogery</th>
           <th scope="col">decription</th>
@@ -24,22 +22,10 @@
             <td>{{this.decription}}</td>
             <td><img
                 style="width: 50px; height:50px"
-                src="/public/product-images/{{this._id}}.jpg"
-                alt=""
+                src="/product-images/{{this._id}}.jpg"
+                alt="admin image"
               />
-              </td>
-           {{!--  <td><img
-                style="width: 50px; height:50px"
-                src="public\product-images\6461c3656a13c31f287dcb88.jpg"
-                alt=""
-              />
-              </td> --}}
-            {{!-- <td><img
-                style="width: 50px; height:50px"
-                src="https://m.media-amazon.com/images/I/71Ntz1Yy4kL._SX679_.jpg"
-                alt=""
-              />
-              </td> --}}
+            </td>
           </tr>
         {{/each}}
       </tbody>

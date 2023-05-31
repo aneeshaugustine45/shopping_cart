@@ -5,7 +5,7 @@ var productHelprer = require("../helpers/product-helper");
 /* GET users listing. */
 router.get("/", function (req, res, next) {
 productHelprer.getAllProducts().then((produtcs)=>{
-  console.log(produtcs);
+  //console.log(produtcs);
   res.render("admin/view-products", { admin: true, produtcs });
 })
 
@@ -23,7 +23,7 @@ router.post("/add-product", (req, res) => {
 
     image.mv('./public/product-images/' + id + ".jpg", (err, done) => {
       if (!err) {
-        res.render("admin/add-product");
+        res.render("admin/view-products");
         console.log("image added");
       } else {
         console.log(err);
