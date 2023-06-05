@@ -7,23 +7,46 @@ const { response } = require("../app");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
+  let user=req.session.user
+  console.log(user);
+
   productHelprer.getAllProducts().then((produtcs) => {
     //console.log(produtcs);
-    res.render("user/view-products", { produtcs });
+    res.render("user/view-products", {produtcs,user});
   });
 });
 router.get("/login", (req, res) => {
-  res.render("user/login");
+  if (req.session.loggedIn){
+    res.redirect("/")
+  }else{
+    res.render("user/login");
+  }
 });
 router.get("/signup", (req, res) => {
   res.render("user/signup");
 });
-router.post("/signup",(req,res) => {
+router.post("/signup", (req, res) => {
   console.log("singup");
-  console.log(req.body); //undifined
+  //console.log(req.body); //undifined
   userHelpers.doSignup(req.body).then((response) => {
     console.log(response);
   });
 });
+
+router.post("/login", (req, res) => {
+  userHelpers.dologin(req.body).then((response)=>{
+    if(response.status){
+      req.session.loggedIn=true
+      req.session.user=response.user
+      res.redirect('/')
+    }else{
+      res.redirect('/login')
+    }
+  })
+});
+router.get('/logout',(req,res)=>{
+  req.session.destroy()
+  res.redirect("/")
+})
 
 module.exports = router;
