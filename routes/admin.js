@@ -1,6 +1,9 @@
 var express = require("express");
 var router = express.Router();
 var productHelprer = require("../helpers/product-helper");
+const { Admin } = require("mongodb");
+const productHelper = require("../helpers/product-helper");
+const { response } = require("../app");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -30,5 +33,11 @@ router.post("/add-product", (req, res) => {
     });
   });
 });
-
+router.get("/delete-product/:id",(req,res)=>{
+  let proId=req.params.id
+  //console.log(proId);
+  productHelper.deleteProduct(proId).then((response)=>{
+    res.redirect("/admin/")
+  })
+})
 module.exports = router;

@@ -5,6 +5,9 @@
     <form action="/login" method="post">
       <div class="form-group">
         <label for="Email">Email address</label>
+        {{#if loginErr}}
+        <p class="error"> invalid password or username</p>
+        {{/if}}
         <input
           type="email"
           class="form-control"
