@@ -3,12 +3,13 @@ var db = require("../config/connection");
 var collection = require("../config/collections");
 const { resolve } = require("promise");
 const { response } = require("../app");
-var objectId=require('mongodb').objectId
+const { ServerDescription } = require("mongodb");
+var ObjectId = require("mongodb").ObjectId;
 
 module.exports = {
   addProduct: (product, callback) => {
     db.get()
-      .collection("product")
+      .collection(collection.PRODUCT_COLLECTION)
       .insertOne(product)
       .then((data) => {
         callback(data.insertedId);
@@ -26,13 +27,42 @@ module.exports = {
   },
   deleteProduct: (proId) => {
     return new promise((resolve, reject) => {
-      db.get
+      db.get()
         .collection(collection.PRODUCT_COLLECTION)
-        .removeOne({ _id:objectId(proId)})
+        .removeOne({ _id: new ObjectId(proId) })
         .then((response) => {
-          //console.log(response);
+          console.log(response);
           resolve(response);
         });
+    });
+  },
+
+  getProductDetails: (proId) => {
+    return new promise((resolve, reject) => {
+      db.get()
+        .collection(collection.PRODUCT_COLLECTION)
+        .findOne({ _id: new ObjectId(proId) })
+        .then((product) => {
+          resolve(product);
+        });
+    });
+  },
+
+  updateProduct: (proId, ProductDetails) => {
+    console.log(ProductDetails);
+    return new promise((resolve, reject) => {
+      db.get()
+        .collection(collection.PRODUCT_COLLECTION)
+        .updateOne({ _id:new ObjectId(proId)}, {
+          $set:{
+            name:ProductDetails.name,
+            decription:ProductDetails.decription,
+            price:ProductDetails.price,
+            catogery:ProductDetails.catogery
+          }
+        }).then((response)=>{
+          resolve()
+        })
     });
   },
 };
