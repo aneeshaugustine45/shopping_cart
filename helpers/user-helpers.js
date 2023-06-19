@@ -3,7 +3,7 @@ var collection = require("../config/collections");
 const bcrypt = require("bcrypt");
 const { resolve, reject } = require("promise");
 const { ObjectId } = require("mongodb");
-const { response } = require("../app");
+const { response, request } = require("../app");
 
 module.exports = {
   doSignup: (userData) => {
@@ -21,14 +21,14 @@ module.exports = {
   },
   dologin: (userData) => {
     return new Promise(async (resolve, reject) => {
-      //console.log(userData);
+      console.log(userData);
       let loginStatus = false;
       let response = {};
       let user = await db
         .get()
         .collection(collection.USER_COLLECTION)
         .findOne({ Email: userData.Email });
-      //console.log(user);
+      console.log(user);
       if (user) {
         bcrypt.compare(userData.Password, user.Password).then((status) => {
           console.log(status);
@@ -110,4 +110,15 @@ module.exports = {
       resolve(cartItems[0].cartItems);
     });
   },
+  getCartCount:(userid)=>{
+    console.log(userid);
+    return new Promise(async (resolve,reject)=>{
+      let count =0
+      let cart= await db.get().collection(collection.CART_COLLECTION).findOne({user:new ObjectId(userid)})
+      if (cart){
+        count=cart.product.length
+      }
+      resolve(count)
+    })
+  }
 };
