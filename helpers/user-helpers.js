@@ -21,19 +21,17 @@ module.exports = {
   },
   dologin: (userData) => {
     return new Promise(async (resolve, reject) => {
-      console.log(userData);
       let loginStatus = false;
       let response = {};
       let user = await db
         .get()
         .collection(collection.USER_COLLECTION)
         .findOne({ Email: userData.Email });
-      console.log(user);
       if (user) {
         bcrypt.compare(userData.Password, user.Password).then((status) => {
-          console.log(status);
+          //console.log(status);
           if (status) {
-            console.log("login succes");
+            console.log("login success");
             response.user = user;
             response.status = true;
             resolve(response);
@@ -111,7 +109,6 @@ module.exports = {
     });
   },
   getCartCount:(userid)=>{
-    console.log(userid);
     return new Promise(async (resolve,reject)=>{
       let count =0
       let cart= await db.get().collection(collection.CART_COLLECTION).findOne({user:new ObjectId(userid)})

@@ -18,11 +18,11 @@ const varifylogin = (req, res, next) => {
 /* GET home page. */
 router.get("/", async function (req, res, next) {
   let user = req.session.user;
-  console.log(user);
+  //console.log(user);
   let cartCount = null;
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
-    console.log(req.session.id);
+    //console.log(req.session.id);
   }
   productHelprer.getAllProducts().then((produtcs) => {
     //console.log("all products"); console.log(produtcs);
@@ -42,7 +42,6 @@ router.get("/signup", (req, res) => {
 });
 router.post("/signup", (req, res) => {
   console.log("singup");
-  console.log(req.body); //undifined
   userHelpers.doSignup(req.body).then((response) => {
     console.log(response);
     req.session.loggedIn = true;
@@ -72,9 +71,11 @@ router.get("/cart", varifylogin, async (req, res) => {
   console.log(product);
   res.render("user/cart", { product, user: req.session.user });
 });
-router.get("/add-to-cart/:id", varifylogin, (req, res) => {
+router.get("/add-to-cart/:id", (req, res) => {
+  console.log("api call");
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
-    res.redirect("/");
+    //res.redirect("/");
+    res.json({status:true})
   });
 });
 
