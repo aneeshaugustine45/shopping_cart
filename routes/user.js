@@ -22,7 +22,6 @@ router.get("/", async function (req, res, next) {
   let cartCount = null;
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
-    //console.log(req.session.id);
   }
   productHelprer.getAllProducts().then((produtcs) => {
     //console.log("all products"); console.log(produtcs);
@@ -68,8 +67,11 @@ router.get("/logout", (req, res) => {
 });
 router.get("/cart", varifylogin, async (req, res) => {
   let product = await userHelpers.getCartProduct(req.session.user._id);
-  console.log(product);
-  res.render("user/cart", { product, user: req.session.user });
+  let cartCount = null;
+  if (req.session.user) {
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
+  }
+  res.render("user/cart", { product, user: req.session.user,cartCount});
 });
 router.get("/add-to-cart/:id", (req, res) => {
   console.log("api call");
