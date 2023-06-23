@@ -36,7 +36,7 @@ router.get("/login", (req, res) => {
     req.session.loginErr = false;
   }
 });
-router.get("/signup", (req, res) => {
+router.get("/signup", (_req, res) => {
   res.render("user/signup");
 });
 router.post("/signup", (req, res) => {
@@ -67,18 +67,36 @@ router.get("/logout", (req, res) => {
 });
 router.get("/cart", varifylogin, async (req, res) => {
   let product = await userHelpers.getCartProduct(req.session.user._id);
+  let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
   let cartCount = null;
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
-  res.render("user/cart", { product, user: req.session.user,cartCount});
+  res.render("user/cart", { product, user: req.session.user, cartCount,totalValue });
 });
 router.get("/add-to-cart/:id", (req, res) => {
   console.log("api call");
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
     //res.redirect("/");
-    res.json({status:true})
+    res.json({ status: true });
   });
+});
+router.post("/change-product-quantity", (req, res,next) => {
+  console.log(req.body);
+  userHelpers.changeProductQuantity(req.body).then(async(response) => {
+    response.total=await userHelpers.getTotalAmount(req.body)
+    res.json(response);
+  });
+});
+router.post("/cart-remove",(req,res)=>{
+  userHelpers.removeCart(req.body).then((response) => {
+      res.json(response);})
+})
+
+router.get("/place-order",varifylogin, async (req, res) => {
+  let total=await userHelpers.getTotalAmount(req.session.user._id)
+
+    res.render("user/order",{total})
 });
 
 module.exports = router;

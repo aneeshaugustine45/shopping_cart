@@ -5,6 +5,7 @@
         <tr>
           <th scope="col">Item</th>
           <th scope="col">Title</th>
+          <th scope="col">price</th>
           <th scope="col">Quantity</th>
         </tr>
       </thead>
@@ -13,19 +14,28 @@
         <tr>
           <td><img
               style="width: 70px;hight:70px"
-              src="product-images/{{this._id}}.jpg"
+              src="product-images/{{this.product._id}}.jpg"
               alt=""
             /></td>
-          <td>{{this.name}}</td>
+          <td>{{this.product.name}}</td>
+          <td>{{this.product.price}}</td>
           <td>
-            <button class="cart-item-count mr-3">-</button>1<button class="cart-item-count ml-3">+</button>
+            <button class="cart-item-count mr-3" onclick="changeQuntity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button>
+            <span id="{{this.product._id}}">{{this.quantity}}</span>
+            <button class="cart-item-count ml-3" onclick="changeQuntity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">+</button>
           </td>
           <td>
-            <a href="" class="btn btn-danger">Remove</a>
+            <button class="btn btn-danger" onclick="removeCart('{{this._id}}','{{this.product._id}}')">Remove</button>
           </td>
         </tr>
         {{/each}}
       </tbody>
     </table>
+    <hr>
+    <div class="float-right" >
+    <h3 class="float-right mr-5 mt-4">total: rs <span id="total">'{{totalValue}}'</span></h3>
+    <a href="/place-order" class="float-right mr-5 mt-4 btn btn-success">place order</a>
+    </div>
+
   </div>
 </section>

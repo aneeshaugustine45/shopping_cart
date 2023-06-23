@@ -15,10 +15,14 @@
             />
             <div class="card-body">
               <h5 class="card-title">{{this.name}}</h5>
-              <p class="card-text">{{this.decription}}</p>
-              {{!--               <a href="/add-to-cart/{{this._id}}" class="btn btn-primary">add to cart</a>
- --}}
-              <button onclick="addToCart('{{this._id}}')" class="btn btn-primary" id="btnadad">Add To Cart
+              <p class="card-text">rs: {{this.price}}</p>
+              {{!-- <p class="card-text">{{this.decription}}</p> --}}
+              <p class="card-text">{{this.catogery}}</p>
+              <button
+                onclick="addToCart('{{this._id}}')"
+                class="btn btn-primary"
+                id="btnadad"
+              >Add To Cart
               </button>
             </div>
           </div>
