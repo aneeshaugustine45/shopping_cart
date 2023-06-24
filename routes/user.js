@@ -70,12 +70,12 @@ router.get("/cart", varifylogin, async (req, res) => {
   let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
   let cartCount = null;
   if (req.session.user) {
+    console.log(req.session.user);
     cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
   res.render("user/cart", { product, user: req.session.user, cartCount,totalValue });
 });
 router.get("/add-to-cart/:id", (req, res) => {
-  console.log("api call");
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
     //res.redirect("/");
     res.json({ status: true });
@@ -84,7 +84,7 @@ router.get("/add-to-cart/:id", (req, res) => {
 router.post("/change-product-quantity", (req, res,next) => {
   console.log(req.body);
   userHelpers.changeProductQuantity(req.body).then(async(response) => {
-    response.total=await userHelpers.getTotalAmount(req.body)
+    response.total=await userHelpers.getTotalAmount(req.body.user)
     res.json(response);
   });
 });
