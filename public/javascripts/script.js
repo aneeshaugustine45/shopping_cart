@@ -15,7 +15,7 @@ function addToCart(proId) {
   });
 }
 
-function changeQuntity(cartId, proId, count,userid) {
+function changeQuntity(cartId,proId,userid,count) {
   let quantity = parseInt(document.getElementById(proId).innerHTML);
   console.log(userid);
   count = parseInt(count);
