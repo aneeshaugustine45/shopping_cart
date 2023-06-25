@@ -70,7 +70,6 @@ router.get("/cart", varifylogin, async (req, res) => {
   let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
   let cartCount = null;
   if (req.session.user) {
-    console.log(req.session.user);
     cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
   res.render("user/cart", { product, user: req.session.user, cartCount,totalValue });
@@ -96,7 +95,7 @@ router.post("/cart-remove",(req,res)=>{
 router.get("/place-order",varifylogin, async (req, res) => {
   let total=await userHelpers.getTotalAmount(req.session.user._id)
 
-    res.render("user/order",{total})
+    res.render("user/order",{total,user:req.session.user})
 });
 
 module.exports = router;
