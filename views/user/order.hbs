@@ -4,14 +4,16 @@
       <h1 class="text-center">Enter Delivery Details</h1>
 
       <div class="row">
-        <div class="col-md-6 delivery-details">
-          <form>
+        <form action="" id="checkout-form">
+
+          <div class="delivery-details">
             <div class="form-group">
               <label for="address">Address:</label>
               <input
                 type="text"
                 class="form-control"
                 id="address"
+                name="address"
                 placeholder="Enter your address"
               />
             </div>
@@ -21,6 +23,7 @@
                 type="text"
                 class="form-control"
                 id="pincode"
+                name="pincode"
                 placeholder="Enter pincode"
               />
             </div>
@@ -30,39 +33,55 @@
                 type="text"
                 class="form-control"
                 id="mobile"
+                name="mobile"
                 placeholder="Enter mobile number"
               />
             </div>
-          </form>
-        </div>
-        <div class="col-md-6 total-amount mt-4">
-          <h2 class="text-center">Total Amount: rs: {{total}}</h2>
-          <div class="payment-method">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="cod"
-                value="cod"
+            <input
+                type="text"
+                class="form-control"
+                id="userid"
+                name="userid"
+                value="{{user._id}}"
+                placeholder="Enter mobile number"
+                hidden
               />
-              <label class="form-check-label" for="cod">COD</label>
+            
+            <h2 class="text-center">Total Amount: rs: {{total}}</h2>
+            <hr />
+            <div class="payment">
+              <p>payment methode</p>
+              <label class="radio-inline">
+                <input
+                  type="radio"
+                  name="payment-method"
+                  value="COD"
+                  checked
+                />COD
+              </label><br />
+              <label class="radio-inline">
+                <input
+                  type="radio"
+                  name="payment-method"
+                  value="ONLINE"
+                />Online
+              </label><br />
+              <button class="btn btn-primary" type="submit">checkout</button>
             </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="online-payment"
-                value="online-payment"
-              />
-              <label class="form-check-label" for="online-payment">Online
-                Payment</label>
-            </div> 
           </div>
-          <div style="text-align: center; margin: 20px; ">
-            <button type="button" class="btn btn-primary" >Checkout</button>
-            </div>
-        </div>
+        </form>
+
       </div>
     </div>
   </div>
 </div>
+<script>
+  $("#checkout-form").submit((e)=>{ 
+    e.preventDefault() 
+    $.ajax({
+  url:"/place-order",
+  method:"post", 
+  data:$('#checkout-form').serialize(),
+  success:(Response)=>{ 
+    alert(Response) } }) })
+</script>

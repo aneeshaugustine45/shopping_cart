@@ -1,4 +1,4 @@
-const { resource, response } = require("../../app");
+//const { resource, response } = require("../../app");
 
 function addToCart(proId) {
   $.ajax({
