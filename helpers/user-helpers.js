@@ -256,23 +256,26 @@ module.exports = {
   },
   placeOrder:(order,product,total)=>{
     return new Promise((resolve,reject)=>{
+      console.log('*****');
       console.log(order,product,total);
+      console.log('*****');
       let status=order['Payment-Method']==='COD'?'palced':'penting'
       let orderObj={
         deliveryDetails:{
         mobile:order.mobile,
-        adderss:order.adderss,
+        address:order.address,
         pincode:order.pincode,
       },
       userid:new ObjectId (order.userid),
-      PaymentMethod:order['Payment-Method'],
+      paymentMethod:order['Payment-Method'],
       product:product,
       totalAmount:total,
       status:status,
-      //date: new date
+      date: new Date()
     }
     db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
-      resolve()
+/*       db.get().collection(collection.CART_COLLECTION).removeOne({user:new ObjectId(order.userid)})
+ */      resolve()
     })
 
     })

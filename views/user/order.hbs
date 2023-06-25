@@ -54,7 +54,7 @@
               <label class="radio-inline">
                 <input
                   type="radio"
-                  name="payment-method"
+                  name="Payment-Method"
                   value="COD"
                   checked
                 />COD
@@ -62,7 +62,7 @@
               <label class="radio-inline">
                 <input
                   type="radio"
-                  name="payment-method"
+                  name="Payment-Method"
                   value="ONLINE"
                 />Online
               </label><br />
@@ -84,4 +84,7 @@
   data:$('#checkout-form').serialize(),
   success:(Response)=>{ 
     alert(Response) } }) })
+    if(Response.stsus){
+      location.href='/'
+    }
 </script>
