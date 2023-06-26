@@ -7,16 +7,16 @@
 
         <div class="col-md-3 p-3">
           <div class="card" style="width: 15rem; height:25rem">
-            <img
+             <img
               class="card-img-top"
               src="/product-images/{{this._id}}.jpg"
               alt="Card image user"
               style="height: 12rem;"
             />
             <div class="card-body">
-              <h5 class="card-title">{{this.name}}</h5>
-              <p class="card-text">rs: {{this.price}}</p>
-              {{!-- <p class="card-text">{{this.decription}}</p> --}}
+              <h6 class="card-title">{{this.name}}</h6>
+              <p class="card-text">{{this.decription}}</p>
+              <h5 class="card-text">rs: {{this.price}}</h5>
               <p class="card-text">{{this.catogery}}</p>
               <button
                 onclick="addToCart('{{this._id}}')"

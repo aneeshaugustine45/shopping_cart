@@ -145,7 +145,7 @@ module.exports = {
   },
   getCartCount: (userid) => {
     return new Promise(async (resolve, reject) => {
-      let count = 0;
+      let count = null;
       let cart = await db
         .get()
         .collection(collection.CART_COLLECTION)
@@ -297,13 +297,53 @@ module.exports = {
   },
   getUserOrder:(userId)=>{
     return new Promise(async (resolve,reject)=>{
-      console.log(userId);
+      //console.log(userId);
       let order =await db.get().collection(collection.ORDER_COLLECTION)
       .find({userid: new ObjectId(userId)}).toArray()
-      console.log(order);
+      //console.log(order);
       resolve(order)  
     })
   },
+  getOrderProduct: (orderid) => {
+    console.log(orderid);
+    return new Promise(async (resolve, reject) => {
+      let orderItem = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          {
+            $match: { _id: new ObjectId(orderid) },
+          },
+          {
+            $unwind: "$product",
+          },
+          {
+            $project: {
+              item: "$product.item",
+              quantity: "$product.quantity",
+            },
+          },
+          {
+            $lookup: {
+              from: collection.PRODUCT_COLLECTION,
+              localField: "item",
+              foreignField: "_id",
+              as: "product",
+            },
+          },
+          {
+            $project: {
+              item: 1,
+              quantity: 1,
+              product: { $arrayElemAt: ["$product", 0] },
+            },
+          },
+        ])
+        .toArray();
+      console.log(orderItem);
+      resolve(orderItem);
+    });
+  },
 
-  
+
 };

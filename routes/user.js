@@ -96,7 +96,7 @@ router.post("/cart-remove",(req,res)=>{
 router.get("/place-order",varifylogin, async (req, res) => {
   let total=await userHelpers.getTotalAmount(req.session.user._id)
 
-    res.render("user/order",{total,user:req.session.user})
+    res.render("user/place-order",{total,user:req.session.user})
 });
 router.post('/place-order',async(req,res)=>{
   let product =await userHelpers.getCartProductList(req.body.userid)
@@ -111,6 +111,14 @@ router.get("/order-success",(req,res)=>{
 })
 router.get("/view-orders",async (req,res)=>{
   let order = await userHelpers.getUserOrder(req.session.user._id)
-  res.render("user/view-orders",{user:req.session.user,order})
+  let cartCount = null;
+  if (req.session.user) {
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
+  }
+  res.render("user/view-orders",{user:req.session.user,order,cartCount})
+})
+router.get("/view-order-product/:id", async (req,res)=>{
+  let product = await userHelpers.getOrderProduct(req.params.id)
+  res.render("user/view-order-product",{user:req.session.user,product})
 })
 module.exports = router;

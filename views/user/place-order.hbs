@@ -38,15 +38,15 @@
               />
             </div>
             <input
-                type="text"
-                class="form-control"
-                id="userid"
-                name="userid"
-                value="{{user._id}}"
-                placeholder="Enter mobile number"
-                hidden
-              />
-            
+              type="text"
+              class="form-control"
+              id="userid"
+              name="userid"
+              value="{{user._id}}"
+              placeholder="Enter mobile number"
+              hidden
+            />
+
             <h2 class="text-center">Total Amount: rs: {{total}}</h2>
             <hr />
             <div class="payment">
@@ -79,17 +79,17 @@
   $("#checkout-form").submit((e)=>{ 
     e.preventDefault() 
     $.ajax({
-  url:"/place-order",
+  url:"/place-order", 
   method:"post", 
   data:$('#checkout-form').serialize(),
   success:(response)=>{ 
-    alert(response)
-        console.log(response);
-    if(response.status){
-      location.href='/order-success'
-    }
-    }
-    })
-    })
+    alert(response) 
+    console.log(response);
+  if(response.status){ 
+    location.href='/order-success' 
+       } 
+      } 
+    }) 
+  })
 
 </script>
