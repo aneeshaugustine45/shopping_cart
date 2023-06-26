@@ -188,7 +188,7 @@ module.exports = {
           }
         )
         .then((response) => {
-          resolve({status:true});
+          resolve({ status: true });
         });
     });
   },
@@ -244,48 +244,66 @@ module.exports = {
             },
           },
           {
-            $group:{
-              _id:null,
-              total:{$sum:{$multiply:['$quantity',{$toInt:'$product.price'}]}}
-            }
-          }
+            $group: {
+              _id: null,
+              total: {
+                $sum: {
+                  $multiply: ["$quantity", { $toInt: "$product.price" }],
+                },
+              },
+            },
+          },
         ])
         .toArray();
       resolve(total[0].total);
     });
   },
-  placeOrder:(order,product,total)=>{
-    return new Promise((resolve,reject)=>{
-      console.log('*****');
-      console.log(order,product,total);
-      console.log('*****');
-      let status=order['Payment-Method']==='COD'?'palced':'penting'
-      let orderObj={
-        deliveryDetails:{
-        mobile:order.mobile,
-        address:order.address,
-        pincode:order.pincode,
-      },
-      userid:new ObjectId (order.userid),
-      paymentMethod:order['Payment-Method'],
-      product:product,
-      totalAmount:total,
-      status:status,
-      date: new Date()
-    }
-    db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
-/*       db.get().collection(collection.CART_COLLECTION).removeOne({user:new ObjectId(order.userid)})
- */      resolve()
-    })
-
-    })
-
+  placeOrder: (order, product, total) => {
+    return new Promise((resolve, reject) => {
+      //console.log(order, product, total);
+      let status = order["Payment-Method"] === "COD" ? "palced" : "penting";
+      let orderObj = {
+        deliveryDetails: {
+          mobile: order.mobile,
+          address: order.address,
+          pincode: order.pincode,
+        },
+        userid: new ObjectId(order.userid),
+        paymentMethod: order["Payment-Method"],
+        product: product,
+        totalAmount: total,
+        status: status,
+        date: new Date(),
+      };
+      db.get()
+        .collection(collection.ORDER_COLLECTION)
+        .insertOne(orderObj)
+        .then((response) => {
+          db.get()
+            .collection(collection.CART_COLLECTION)
+            .deleteOne({ user: new ObjectId(order.userid)});
+          resolve();
+        });
+    });
+  }, 
+  getCartProductList: (user) => {
+    return new Promise(async (resolve, reject) => {
+      let cart = await db
+        .get()
+        .collection(collection.CART_COLLECTION)
+        .findOne({ user: new ObjectId(user) });
+      resolve(cart.product);
+    });
   },
-  getCartProductList:(user)=>{
+  getUserOrder:(userId)=>{
     return new Promise(async (resolve,reject)=>{
-      let cart=await db.get().collection(collection.CART_COLLECTION).findOne({user: new ObjectId(user)})
-      resolve(cart.product)
-
+      console.log(userId);
+      let order =await db.get().collection(collection.ORDER_COLLECTION)
+      .find({userid: new ObjectId(userId)}).toArray()
+      console.log(order);
+      resolve(order)  
     })
-  }
+  },
+
+  
 };

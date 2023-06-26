@@ -29,7 +29,7 @@ module.exports = {
     return new promise((resolve, reject) => {
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
-        .removeOne({ _id: new ObjectId(proId)})
+        .deleteOne({ _id: new ObjectId(proId)})
         .then((response) => {
           console.log(response);
           resolve(response);

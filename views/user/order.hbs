@@ -82,9 +82,14 @@
   url:"/place-order",
   method:"post", 
   data:$('#checkout-form').serialize(),
-  success:(Response)=>{ 
-    alert(Response) } }) })
-    if(Response.stsus){
-      location.href='/'
+  success:(response)=>{ 
+    alert(response)
+        console.log(response);
+    if(response.status){
+      location.href='/order-success'
     }
+    }
+    })
+    })
+
 </script>

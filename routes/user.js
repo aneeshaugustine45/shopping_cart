@@ -3,8 +3,9 @@ var router = express.Router();
 var productHelprer = require("../helpers/product-helper");
 const { helpers, log } = require("handlebars");
 const userHelpers = require("../helpers/user-helpers");
-const { response } = require("../app");
+const { response, render } = require("../app");
 const { route } = require("./admin");
+const collections = require("../config/collections");
 var ObjectId = require("mongodb").ObjectId;
 
 const varifylogin = (req, res, next) => {
@@ -102,8 +103,14 @@ router.post('/place-order',async(req,res)=>{
   let totalPrice = await userHelpers.getTotalAmount(req.body.userid)
   userHelpers.placeOrder(req.body,product,totalPrice).then((response)=>{
     res.json({status:true})
-
   })
   console.log(req.body);
+})
+router.get("/order-success",(req,res)=>{
+  res.render('user/order-success',{user:req.session.user})
+})
+router.get("/view-orders",async (req,res)=>{
+  let order = await userHelpers.getUserOrder(req.session.user._id)
+  res.render("user/view-orders",{user:req.session.user,order})
 })
 module.exports = router;
