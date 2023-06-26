@@ -24,9 +24,9 @@ router.get("/", async function (req, res, next) {
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
-  productHelprer.getAllProducts().then((produtcs) => {
+  productHelprer.getAllProducts().then((products) => {
     //console.log("all products"); console.log(produtcs);
-    res.render("user/view-products", { produtcs, user, cartCount });
+    res.render("user/view-products", { produtcs: products, user, cartCount });
   });
 });
 router.get("/login", (req, res) => {
