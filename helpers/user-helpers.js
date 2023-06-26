@@ -196,14 +196,8 @@ module.exports = {
     return new Promise((resolve) => {
       db.get()
         .collection(collection.CART_COLLECTION)
-        .updateOne(
-          {
-            _id: new ObjectId(details.cart),
-          },
-          {
-            $pull: { product: { item: new ObjectId(details.product) } },
-          }
-        )
+
+        .deleteOne({ _id: new ObjectId(details.cart)})
         .then(() => {
           resolve({ removeCartProduct: true });
         });
@@ -340,7 +334,7 @@ module.exports = {
           },
         ])
         .toArray();
-      console.log(orderItem);
+      //console.log(orderItem);
       resolve(orderItem);
     });
   },

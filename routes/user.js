@@ -24,9 +24,9 @@ router.get("/", async function (req, res, next) {
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
-  productHelprer.getAllProducts().then((produtcs) => {
+  productHelprer.getAllProducts().then((products) => {
     //console.log("all products"); console.log(produtcs);
-    res.render("user/view-products", { produtcs, user, cartCount });
+    res.render("user/view-products", { products: products, user, cartCount });
   });
 });
 router.get("/login", (req, res) => {
@@ -68,12 +68,20 @@ router.get("/logout", (req, res) => {
 });
 router.get("/cart", varifylogin, async (req, res) => {
   let product = await userHelpers.getCartProduct(req.session.user._id);
-  let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
+  let totalValue = 0;
+  if (product.length > 0) {
+    totalValue = await userHelpers.getTotalAmount(req.session.user._id);
+  }
   let cartCount = null;
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
-  res.render("user/cart", { product, user: req.session.user, cartCount,totalValue });
+  res.render("user/cart", {
+    product,
+    user: req.session.user,
+    cartCount,
+    totalValue,
+  });
 });
 router.get("/add-to-cart/:id", (req, res) => {
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
@@ -81,44 +89,59 @@ router.get("/add-to-cart/:id", (req, res) => {
     res.json({ status: true });
   });
 });
-router.post("/change-product-quantity", (req, res,next) => {
+router.post("/change-product-quantity", (req, res, next) => {
   console.log(req.body);
-  userHelpers.changeProductQuantity(req.body).then(async(response) => {
-    response.total=await userHelpers.getTotalAmount(req.body.user)
+  if (req.body.quantity == 1 && req.body.count == -1) {
+    userHelpers.removeCart(req.body);
+    res.json({ removeProduct: true });
+
+    console.log("cart removed");
+  } else {
+    userHelpers.changeProductQuantity(req.body).then(async (response) => {
+      response.total = await userHelpers.getTotalAmount(req.body.user);
+      console.log("0000");
+      console.log(response);
+      res.json(response);
+    });
+  }
+});
+router.post("/cart-remove", (req, res) => {
+  userHelpers.removeCart(req.body).then((response) => {
     res.json(response);
   });
 });
-router.post("/cart-remove",(req,res)=>{
-  userHelpers.removeCart(req.body).then((response) => {
-      res.json(response);})
-})
 
-router.get("/place-order",varifylogin, async (req, res) => {
-  let total=await userHelpers.getTotalAmount(req.session.user._id)
+router.get("/place-order", varifylogin, async (req, res) => {
+  let total = await userHelpers.getTotalAmount(req.session.user._id);
 
-    res.render("user/place-order",{total,user:req.session.user})
+  res.render("user/place-order", { total, user: req.session.user });
 });
-router.post('/place-order',async(req,res)=>{
-  let product =await userHelpers.getCartProductList(req.body.userid)
-  let totalPrice = await userHelpers.getTotalAmount(req.body.userid)
-  userHelpers.placeOrder(req.body,product,totalPrice).then((response)=>{
-    res.json({status:true})
-  })
+router.post("/place-order", async (req, res) => {
+  let product = await userHelpers.getCartProductList(req.body.userid);
+  let totalPrice = await userHelpers.getTotalAmount(req.body.userid);
+  userHelpers.placeOrder(req.body, product, totalPrice).then((response) => {
+    res.json({ status: true });
+  });
   console.log(req.body);
-})
-router.get("/order-success",(req,res)=>{
-  res.render('user/order-success',{user:req.session.user})
-})
-router.get("/view-orders",async (req,res)=>{
-  let order = await userHelpers.getUserOrder(req.session.user._id)
+});
+router.get("/order-success", (req, res) => {
+  res.render("user/order-success", { user: req.session.user });
+});
+router.get("/view-orders", async (req, res) => {
+  let order = await userHelpers.getUserOrder(req.session.user._id);
   let cartCount = null;
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
-  res.render("user/view-orders",{user:req.session.user,order,cartCount})
-})
-router.get("/view-order-product/:id", async (req,res)=>{
-  let product = await userHelpers.getOrderProduct(req.params.id)
-  res.render("user/view-order-product",{user:req.session.user,product})
-})
+  res.render("user/view-orders", { user: req.session.user, order, cartCount });
+});
+router.get("/view-order-product/:id", async (req, res) => {
+  let product = await userHelpers.getOrderProduct(req.params.id);
+  console.log("00000000");
+  console.log(product);
+  console.log("00000000");
+  console.log(product[0]);
+  console.log(product[1]);
+  res.render("user/view-order-product", { user: req.session.user, product });
+});
 module.exports = router;
