@@ -20,7 +20,7 @@ const varifylogin = (req, res, next) => {
 router.get("/", async function (req, res, next) {
   let user = req.session.user;
   //console.log(user);
-  let cartCount = null;
+  let cartCount = 0;
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
@@ -43,7 +43,7 @@ router.get("/signup", (_req, res) => {
 router.post("/signup", (req, res) => {
   console.log("singup");
   userHelpers.doSignup(req.body).then((response) => {
-    console.log(response);
+    //console.log(response);
     req.session.loggedIn = true;
     req.session.user = response;
     res.redirect("/");
@@ -89,7 +89,7 @@ router.get("/add-to-cart/:id", (req, res) => {
   });
 });
 router.post("/change-product-quantity", (req, res, next) => {
-  console.log(req.body);
+  //console.log(req.body);
   if (req.body.quantity == 1 && req.body.count == -1) {
     userHelpers.removeCart(req.body);
     res.json({ removeProduct: true });
@@ -117,8 +117,14 @@ router.get("/place-order", varifylogin, async (req, res) => {
 router.post("/place-order", async (req, res) => {
   let product = await userHelpers.getCartProductList(req.body.userid);
   let totalPrice = await userHelpers.getTotalAmount(req.body.userid);
-  userHelpers.placeOrder(req.body, product, totalPrice).then((response) => {
-    res.json({ status: true });
+  userHelpers.placeOrder(req.body, product, totalPrice).then((orderid) => {
+    if(req.body['Payment-Method']=='COD'){
+      res.json({ status: true });
+    }else{
+      userHelpers.generateRozorpay(orderid).then((response)=>{
+        
+      })
+    }
   });
   //console.log(req.body);
 });
@@ -134,12 +140,15 @@ router.get("/view-orders", async (req, res) => {
   res.render("user/view-orders", { user: req.session.user, order, cartCount });
 });
 router.get("/view-order-product/:id", async (req, res) => {
+  let cartCount = 0;
+  if (req.session.user) {
+    cartCount = await userHelpers.getCartCount(req.session.user._id)}
   let product = await userHelpers.getOrderProduct(req.params.id);
-  console.log("00000000");
+/*   console.log("00000000");
   console.log(product);
   console.log("00000000");
   console.log(product[0]);
-  console.log(product[1]);
-  res.render("user/view-order-product", { user: req.session.user, product });
+  console.log(product[1]); */
+  res.render("user/view-order-product", { user: req.session.user, product,cartCount});
 });
 module.exports = router;

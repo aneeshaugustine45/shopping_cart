@@ -17,8 +17,6 @@ router.get("/add-product", function (req, res) {
 });
 
 router.post("/add-product", (req, res) => {
-  //console.log(req.body); //undifined
-
   productHelprer.addProduct(req.body, (id) => {
     let image = req.files.image;
 
@@ -33,32 +31,37 @@ router.post("/add-product", (req, res) => {
     });
   });
 });
-router.get("/delete-product/:id",(req,res)=>{
-  let proId=req.params.id
-  //console.log(proId); //works
-  productHelper.deleteProduct(proId).then((response)=>{
-    res.redirect("/admin/")
-  })
-})
-router.get("/edit-product/:id", async (req,res)=>{
-  let product = await productHelper.getProductDetails(req.params.id)
+router.get("/delete-product/:id", (req, res) => {
+  let proId = req.params.id;
+  productHelper.deleteProduct(proId).then((response) => {
+    res.redirect("/admin/");
+  });
+});
+router.get("/edit-product/:id", async (req, res) => {
+  let product = await productHelper.getProductDetails(req.params.id);
   console.log(product + "products");
 
-  res.render('admin/edit-product',{product})
-})
-router.post('/update-product/:id',(req,res)=>{
-console.log(req.params);
-let id=req.params.id
-console.log(id);
-productHelper.updateProduct(req.params.id, req.body).then(()=>{
-  res.redirect('/admin')
-  console.log(req.body);
-  if(req.files.image){
-    console.log(req.files.image);
-    let image=req.files.image
-    image.mv("./public/product-images/" + id + ".jpg");
+  res.render("admin/edit-product", { product });
+});
+router.post("/update-product/:id", (req, res) => {
+  console.log(req.params);
+  let id = req.params.id;
+  console.log(id);
+  productHelper.updateProduct(req.params.id, req.body).then(() => {
+    res.redirect("/admin");
+    console.log(req.body);
+    if (req.files.image) {
+      console.log(req.files.image);
+      let image = req.files.image;
+      image.mv("./public/product-images/" + id + ".jpg");
+    }
+  });
+});
+router.get('/products', function (req, res, next) {
+  productHelprer.getAllProducts().then((produtcs) => {
+    //console.log(produtcs);
+    res.render("admin/view-products", { admin: true, produtcs });
+  });
+});
 
-  }
-})
-})
 module.exports = router;

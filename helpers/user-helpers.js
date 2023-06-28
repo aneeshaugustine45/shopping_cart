@@ -4,6 +4,12 @@ const bcrypt = require("bcrypt");
 const { resolve, reject } = require("promise");
 const { ObjectId } = require("mongodb");
 const { response, request } = require("../app");
+const Razorpay = require('razorpay');
+
+var instance = new Razorpay({
+  key_id: 'rzp_test_xFkrsUknfuTaIi',
+  key_secret: 'b0wqaM4bIY8QqgJcYBOwpYKh',
+});
 
 module.exports = {
   doSignup: (userData) => {
@@ -47,7 +53,6 @@ module.exports = {
     });
   },
   addToCart: (proId, userId) => {
-    console.log('product added');
     let proObj = {
       item: new ObjectId(proId),
       quantity: 1,
@@ -283,7 +288,8 @@ module.exports = {
           db.get()
             .collection(collection.CART_COLLECTION)
             .deleteOne({ user: new ObjectId(order.userid)});
-          resolve();
+          resolve(response.insertedId);
+          //console.log(response.insertedId);
         });
     });
   }, 
@@ -306,7 +312,7 @@ module.exports = {
     })
   },
   getOrderProduct: (orderid) => {
-    console.log(orderid);
+    //console.log(orderid);
     return new Promise(async (resolve, reject) => {
       let orderItem = await db
         .get()
@@ -345,6 +351,10 @@ module.exports = {
       resolve(orderItem);
     });
   },
+generateRazorpay:(orderid)=>{
+  return new Promise((resolve,reject)=>{
 
+  })
+}
 
 };
