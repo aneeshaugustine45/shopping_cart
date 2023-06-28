@@ -47,6 +47,7 @@ module.exports = {
     });
   },
   addToCart: (proId, userId) => {
+    console.log('product added');
     let proObj = {
       item: new ObjectId(proId),
       quantity: 1,
@@ -60,8 +61,8 @@ module.exports = {
         let proExist = userCart.product.findIndex(
           (product) => product.item == proId
         );
-        console.log(proId);
-        console.log(proExist);
+        //console.log(proId);
+        //console.log(proExist);
         if (proExist != -1) {
           db.get()
             .collection(collection.CART_COLLECTION)
@@ -194,7 +195,7 @@ module.exports = {
   },
   removeCart: (details) => {
     return new Promise((resolve) => {
-      db.get()
+       db.get()
         .collection(collection.CART_COLLECTION)
 
         .deleteOne({ _id: new ObjectId(details.cart)})

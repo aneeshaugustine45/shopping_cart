@@ -85,7 +85,6 @@ router.get("/cart", varifylogin, async (req, res) => {
 });
 router.get("/add-to-cart/:id", (req, res) => {
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
-    //res.redirect("/");
     res.json({ status: true });
   });
 });
@@ -99,8 +98,7 @@ router.post("/change-product-quantity", (req, res, next) => {
   } else {
     userHelpers.changeProductQuantity(req.body).then(async (response) => {
       response.total = await userHelpers.getTotalAmount(req.body.user);
-      console.log("0000");
-      console.log(response);
+      //console.log(response);
       res.json(response);
     });
   }
@@ -122,7 +120,7 @@ router.post("/place-order", async (req, res) => {
   userHelpers.placeOrder(req.body, product, totalPrice).then((response) => {
     res.json({ status: true });
   });
-  console.log(req.body);
+  //console.log(req.body);
 });
 router.get("/order-success", (req, res) => {
   res.render("user/order-success", { user: req.session.user });
