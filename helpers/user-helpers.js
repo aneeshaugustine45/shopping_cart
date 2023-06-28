@@ -195,10 +195,16 @@ module.exports = {
   },
   removeCart: (details) => {
     return new Promise((resolve) => {
-       db.get()
-        .collection(collection.CART_COLLECTION)
-
-        .deleteOne({ _id: new ObjectId(details.cart)})
+      db.get()
+      .collection(collection.CART_COLLECTION)
+      .updateOne(
+        {
+          _id: new ObjectId(details.cart),
+        },
+        {
+          $pull: { product: { item: new ObjectId(details.product) } },
+        }
+      )
         .then(() => {
           resolve({ removeCartProduct: true });
         });
