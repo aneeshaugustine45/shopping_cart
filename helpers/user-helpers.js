@@ -4,13 +4,13 @@ const bcrypt = require("bcrypt");
 const { resolve, reject } = require("promise");
 const { ObjectId } = require("mongodb");
 const { response, request } = require("../app");
-const Razorpay = require('razorpay');
+/* const Razorpay = require('razorpay');
 
 var instance = new Razorpay({
   key_id: 'rzp_test_xFkrsUknfuTaIi',
   key_secret: 'b0wqaM4bIY8QqgJcYBOwpYKh',
 });
-
+ */
 module.exports = {
   doSignup: (userData) => {
     return new Promise(async (resolve, reject) => {
@@ -201,15 +201,15 @@ module.exports = {
   removeCart: (details) => {
     return new Promise((resolve) => {
       db.get()
-      .collection(collection.CART_COLLECTION)
-      .updateOne(
-        {
-          _id: new ObjectId(details.cart),
-        },
-        {
-          $pull: { product: { item: new ObjectId(details.product) } },
-        }
-      )
+        .collection(collection.CART_COLLECTION)
+        .updateOne(
+          {
+            _id: new ObjectId(details.cart),
+          },
+          {
+            $pull: { product: { item: new ObjectId(details.product) } },
+          }
+        )
         .then(() => {
           resolve({ removeCartProduct: true });
         });
@@ -279,7 +279,7 @@ module.exports = {
         product: product,
         totalAmount: total,
         status: status,
-        date: new Date(),
+        date: new Date().toISOString().replace(/T/, " ").replace(/\..+/, ""),
       };
       db.get()
         .collection(collection.ORDER_COLLECTION)
@@ -287,12 +287,12 @@ module.exports = {
         .then((response) => {
           db.get()
             .collection(collection.CART_COLLECTION)
-            .deleteOne({ user: new ObjectId(order.userid)});
+            .deleteOne({ user: new ObjectId(order.userid) });
           resolve(response.insertedId);
           //console.log(response.insertedId);
         });
     });
-  }, 
+  },
   getCartProductList: (user) => {
     return new Promise(async (resolve, reject) => {
       let cart = await db
@@ -302,14 +302,17 @@ module.exports = {
       resolve(cart.product);
     });
   },
-  getUserOrder:(userId)=>{
-    return new Promise(async (resolve,reject)=>{
+  getUserOrder: (userId) => {
+    return new Promise(async (resolve, reject) => {
       //console.log(userId);
-      let order =await db.get().collection(collection.ORDER_COLLECTION)
-      .find({userid: new ObjectId(userId)}).toArray()
+      let order = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .find({ userid: new ObjectId(userId) })
+        .toArray();
       //console.log(order);
-      resolve(order)  
-    })
+      resolve(order);
+    });
   },
   getOrderProduct: (orderid) => {
     //console.log(orderid);
@@ -351,10 +354,7 @@ module.exports = {
       resolve(orderItem);
     });
   },
-generateRazorpay:(orderid)=>{
-  return new Promise((resolve,reject)=>{
-
-  })
-}
-
+  generateRazorpay: (orderid) => {
+    return new Promise((resolve, reject) => {});
+  },
 };
