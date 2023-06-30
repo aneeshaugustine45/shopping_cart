@@ -1,20 +1,33 @@
-<div class="container mt-5">
-  {{#each products}}
-    <div class="card" style="width: 18rem;">
-      <img
-        src="/product-images/{{this.product._id}}.jpg"
-        class="card-img-top"
-        alt="Product Image"
-      />
-      <div class="card-body">
-        <h5 class="card-title">Product: {{this.product.name}}</h5>
-        <p class="card-text">Category: {{this.product.catogery}}</p>
-        <p class="card-text">Price:
-            
-            {{this.product.price}}</p>
-        <p class="card-text">Description: {{this.product.decription}}</p>
-        <p class="card-text">Quantity: {{this.quantity}}</p>
-      </div>
+<section>
+  <div class="container mt-5">
+    <div class="row">
+      {{#each product}}
+        <div class="col-md-6">
+          <div class="card">
+            <div class="row no-gutters">
+              <div class="col-md-5">
+                <img
+                  src="/product-images/{{this.product._id}}.jpg"
+                  class="card-img-top"
+                  alt="Product Image"
+                  height="250px"
+                />
+              </div>
+              <div class="col-md-7">
+                <div class="card-body">
+                  <h5 class="card-title">Product: {{this.product.name}}</h5>
+                  <p class="card-text">Category: {{this.product.category}}</p>
+                  <p class="card-text">Price:
+                    {{this.product.price}}</p>
+                  <p class="card-text">Description:
+                    {{this.product.description}}</p>
+                  <p class="card-text">Quantity: {{this.quantity}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/each}}
     </div>
-  {{/each}}
-</div>
+  </div>
+</section>

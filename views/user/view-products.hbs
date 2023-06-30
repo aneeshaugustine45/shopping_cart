@@ -9,7 +9,7 @@
                 <img
                   class="card-img "
                   src="/product-images/{{this._id}}.jpg"
-                  alt="Product Image"
+                  alt="Product Image" height="240px";
                 />
               </div>
               <div class="col-md-7">
@@ -24,6 +24,13 @@
                     id="btnadd"
                   >
                     Add To Cart
+                  </button>
+                  <button
+                    onclick="addToCart('{{this._id}}')"
+                    class="btn btn-warning"
+                    id="btnadd"
+                  >
+                    Buy Now
                   </button>
                 </div>
               </div>

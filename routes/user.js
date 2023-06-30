@@ -27,6 +27,7 @@ router.get("/", async function (req, res, next) {
   productHelprer.getAllProducts().then((products) => {
     //console.log("all products"); console.log(produtcs);
     res.render("user/view-products", { products: products, user, cartCount });
+    console.log(products);
   });
 });
 router.get("/login", (req, res) => {
@@ -143,11 +144,6 @@ router.get("/view-order-product/:id", async (req, res) => {
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)}
   let product = await userHelpers.getOrderProduct(req.params.id);
-/*   console.log("00000000");
-  console.log(product);
-  console.log("00000000");
-  console.log(product[0]);
-  console.log(product[1]); */
   res.render("user/view-order-product", { user: req.session.user, product,cartCount});
 });
 module.exports = router;
