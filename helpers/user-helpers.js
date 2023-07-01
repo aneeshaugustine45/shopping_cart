@@ -4,13 +4,13 @@ const bcrypt = require("bcrypt");
 const { resolve, reject } = require("promise");
 const { ObjectId } = require("mongodb");
 const { response, request } = require("../app");
-/* const Razorpay = require('razorpay');
+const Razorpay = require("razorpay");
 
 var instance = new Razorpay({
-  key_id: 'rzp_test_xFkrsUknfuTaIi',
-  key_secret: 'b0wqaM4bIY8QqgJcYBOwpYKh',
+  key_id: "rzp_test_xFkrsUknfuTaIi",
+  key_secret: "b0wqaM4bIY8QqgJcYBOwpYKh",
 });
- */
+
 module.exports = {
   doSignup: (userData) => {
     return new Promise(async (resolve, reject) => {
@@ -354,7 +354,21 @@ module.exports = {
       resolve(orderItem);
     });
   },
-  generateRazorpay: (orderid) => {
-    return new Promise((resolve, reject) => {});
+  generateRazorpay: (orderid, total) => {
+    return new Promise((resolve, reject) => {
+      var options = {
+        amount: total, // amount in the smallest currency unit
+        currency: "INR",
+        receipt: "" + orderid,
+      };
+      instance.orders.create(options, function (err, order) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("new order", order);
+          resolve(order);
+        }
+      });
+    });
   },
 };

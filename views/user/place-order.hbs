@@ -75,6 +75,7 @@
     </div>
   </div>
 </div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
   $("#checkout-form").submit((e)=>{ 
     e.preventDefault() 
@@ -85,9 +86,11 @@
   success:(response)=>{ 
     alert(response) 
     console.log(response);
-  if(response.status){ 
+  if(response.status){
     location.href='/order-success' 
-       } 
+       }else{
+        
+       }
       } 
     }) 
   })

@@ -27,7 +27,6 @@ router.get("/", async function (req, res, next) {
   productHelprer.getAllProducts().then((products) => {
     //console.log("all products"); console.log(produtcs);
     res.render("user/view-products", { products: products, user, cartCount });
-    console.log(products);
   });
 });
 router.get("/login", (req, res) => {
@@ -64,7 +63,7 @@ router.post("/login", (req, res) => {
   });
 });
 router.get("/logout", (req, res) => {
-  req.session.user=null
+  req.session.user = null;
   res.redirect("/");
 });
 router.get("/cart", varifylogin, async (req, res) => {
@@ -119,11 +118,12 @@ router.post("/place-order", async (req, res) => {
   let product = await userHelpers.getCartProductList(req.body.userid);
   let totalPrice = await userHelpers.getTotalAmount(req.body.userid);
   userHelpers.placeOrder(req.body, product, totalPrice).then((orderid) => {
-    if(req.body['Payment-Method']=='COD'){
+    if (req.body["Payment-Method"] == "COD") {
       res.json({ status: true });
-    }else{
-      userHelpers.generateRozorpay(orderid).then((response)=>{
-      })
+    } else {
+      userHelpers.generateRazorpay(orderid, totalPrice).then((response) => {
+        res.json(response);
+      });
     }
   });
   //console.log(req.body);
@@ -142,8 +142,13 @@ router.get("/view-orders", async (req, res) => {
 router.get("/view-order-product/:id", async (req, res) => {
   let cartCount = 0;
   if (req.session.user) {
-    cartCount = await userHelpers.getCartCount(req.session.user._id)}
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
+  }
   let product = await userHelpers.getOrderProduct(req.params.id);
-  res.render("user/view-order-product", { user: req.session.user, product,cartCount});
+  res.render("user/view-order-product", {
+    user: req.session.user,
+    product,
+    cartCount,
+  });
 });
 module.exports = router;
