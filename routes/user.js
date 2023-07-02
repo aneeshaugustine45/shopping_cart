@@ -119,8 +119,9 @@ router.post("/place-order", async (req, res) => {
   let totalPrice = await userHelpers.getTotalAmount(req.body.userid);
   userHelpers.placeOrder(req.body, product, totalPrice).then((orderid) => {
     if (req.body["Payment-Method"] == "COD") {
-      res.json({ status: true });
+      res.json({ successCod: true });
     } else {
+      //console.log('using online');
       userHelpers.generateRazorpay(orderid, totalPrice).then((response) => {
         res.json(response);
       });
@@ -151,4 +152,20 @@ router.get("/view-order-product/:id", async (req, res) => {
     cartCount,
   });
 });
+router.post("/verify-payment", (req, res) => {
+  console.log(req.body);
+  userHelpers
+    .verifyPayment(req.body)
+    .then(() => {
+      userHelpers.changePaymentStatus(req.body['order[receipt]']).then(() => {
+        console.log("payment succssfull");
+        res.json({ status: true });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json({ status: false });
+    });
+});
+
 module.exports = router;
