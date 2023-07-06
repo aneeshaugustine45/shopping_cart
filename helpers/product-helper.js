@@ -1,4 +1,4 @@
-const promise = require("promise");
+const Promise = require("promise");
 var db = require("../config/connection");
 var collection = require("../config/collections");
 const { resolve } = require("promise");
@@ -16,7 +16,7 @@ module.exports = {
       });
   },
   getAllProducts: () => {
-    return new promise(async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       let products = await db
         .get()
         .collection(collection.PRODUCT_COLLECTION)
@@ -26,7 +26,7 @@ module.exports = {
     });
   },
   deleteProduct: (proId) => {
-    return new promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
         .deleteOne({ _id: new ObjectId(proId)})
@@ -38,7 +38,7 @@ module.exports = {
   },
 
   getProductDetails: (proId) => {
-    return new promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
         .findOne({ _id: new ObjectId(proId) })
@@ -50,7 +50,7 @@ module.exports = {
 
   updateProduct: (proId, ProductDetails) => {
     console.log(ProductDetails);
-    return new promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
         .updateOne({ _id:new ObjectId(proId)}, {

@@ -1,0 +1,25 @@
+<section>
+  <div class="container mt-3">
+    <div class="row">
+      {{#each users}}
+        <div class="col-md-6">
+          <div class="card" style="width: 18rem;">
+            <div class="card-header">
+              <img
+                src="/images/User-Profile.png"
+                class="card-img-top"
+                alt="Profile Picture"
+                style="border-radius: 50%;"
+              />
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{this.name}}</h5>
+              <h6 class="card-text" style="text-transform: lowercase;;"> email : {{this.Email}}</h6>
+              <a href="#" class="btn btn-primary">View Orders</a>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</section>

@@ -4,6 +4,7 @@ var productHelprer = require("../helpers/product-helper");
 const { Admin } = require("mongodb");
 const productHelper = require("../helpers/product-helper");
 const { response } = require("../app");
+const userHelpers = require("../helpers/user-helpers");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -63,5 +64,11 @@ router.get('/products', function (req, res, next) {
     res.render("admin/view-products", { admin: true, produtcs });
   });
 });
+router.get('/all-users',function (req,res,next){
+  console.log("hi");
+  userHelpers.getAllUsers().then((users)=>{
+    res.render("admin/view-all-users", {users});
+  })
+})
 
 module.exports = router;
