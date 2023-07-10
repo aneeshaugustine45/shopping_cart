@@ -279,7 +279,7 @@ module.exports = {
         product: product,
         totalAmount: total,
         status: status,
-        date: new Date()
+        date: new Date(),
       };
       db.get()
         .collection(collection.ORDER_COLLECTION)
@@ -357,7 +357,7 @@ module.exports = {
   generateRazorpay: (orderid, total) => {
     return new Promise((resolve, reject) => {
       var options = {
-        amount: total*100, // amount in the smallest currency unit
+        amount: total * 100, // amount in the smallest currency unit
         currency: "INR",
         receipt: "" + orderid,
       };
@@ -386,31 +386,34 @@ module.exports = {
       }else{
         reject()
       }
-    })
+    });
   },
-  changePaymentStatus:(orderid)=>{
-    return new Promise((resolve,reject)=>{
-      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:new orderid(orderid)},
-      {
-        $set:{
-          status:"placed"
-        }
-      }
-      ).then(()=>{
-        resolve()
-      })
-
-    })
+  changePaymentStatus: (orderid) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ORDER_COLLECTION)
+        .updateOne(
+          { _id: new orderid(orderid) },
+          {
+            $set: {
+              status: "placed",
+            },
+          }
+        )
+        .then(() => {
+          resolve();
+        });
+    });
   },
-  getAllUsers:() => {
+  getAllUsers: () => {
     return new Promise(async (resolve, reject) => {
-      let users = await db.get()
+      let users = await db
+        .get()
         .collection(collection.USER_COLLECTION)
         .find()
         .toArray();
       resolve(users);
       console.log(users);
     });
-
-  }
-}
+  },
+};
