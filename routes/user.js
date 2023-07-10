@@ -123,6 +123,7 @@ router.post("/place-order", async (req, res) => {
     } else {
       //console.log('using online');
       userHelpers.generateRazorpay(orderid, totalPrice).then((response) => {
+        console.log(response);
         res.json(response);
       });
     }
@@ -163,7 +164,7 @@ router.post("/verify-payment", (req, res) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.log("err "+err);
       res.json({ status: false });
     });
 });

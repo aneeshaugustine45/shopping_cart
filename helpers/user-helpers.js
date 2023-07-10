@@ -289,7 +289,7 @@ module.exports = {
             .collection(collection.CART_COLLECTION)
             .deleteOne({ user: new ObjectId(order.userid) });
           resolve(response.insertedId);
-          //console.log(response.insertedId);
+          console.log(response.insertedId);
         });
     });
   },
@@ -366,25 +366,32 @@ module.exports = {
           console.log("err");
           console.log(err);
         } else {
-          console.log("new order", order);
+          //console.log("new order", order);
           resolve(order);
         }
       });
     });
   },
-  verifyPayment:(details)=>{
-    return new Promise ((resolve,reject)=>{
-      const crypto = require('crypto');
-      let hmac = crypto.createHmac('sha256', 'b0wqaM4bIY8QqgJcYBOwpYK')
-      hmac.update(details['payment[razorpay_order_id]'] + '|'+ details['payment[razorpay_payment_id]']);
-      console.log(hmac);
-      hmac=hmac.digest('hex')
-      console.log(hmac);
-      console.log(details['payment[razorpay_signature]']);
-      if(hmac==details['payment[razorpay_signature]']){
-        resolve()
-      }else{
-        reject()
+  verifyPayment: (details) => {
+    console.log("hi");
+    console.log(details);
+    console.log("hi");
+    console.log(details['order[id]']);
+    console.log(details['payment[razorpay_order_id]']);
+    console.log("hi");
+
+    return new Promise((resolve, reject) => {
+      const crypto = require("crypto");
+      let hmac = crypto.createHmac("sha256", "b0wqaM4bIY8QqgJcYBOwpYK");
+      hmac.update('payment[razorpay_order_id]' + "|" + details["payment[razorpay_payment_id]"]
+      );
+      generatedKey = hmac.digest("hex");
+      console.log(details["payment[razorpay_signature]"]);
+      console.log(generatedKey);
+      if (hmac == details["payment[razorpay_signature]"]) {
+        resolve();
+      } else {
+        reject();
       }
     });
   },
