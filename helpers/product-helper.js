@@ -1,6 +1,7 @@
 const Promise = require("promise");
 var db = require("../config/connection");
 var collection = require("../config/collections");
+const bcrypt = require("bcrypt");
 const { resolve } = require("promise");
 const { response } = require("../app");
 const { ServerDescription } = require("mongodb");
@@ -63,6 +64,33 @@ module.exports = {
         }).then((response)=>{
           resolve()
         })
+    });
+  },
+  adminlogin: (userData) => {
+    return new Promise(async (resolve, reject) => {
+      let loginStatus = false;
+      let response = {};
+      let user = await db
+        .get()
+        .collection(collection.ADMIN_COLLECTION)
+        .findOne({ Email: userData.Email });
+      if (user) {
+        bcrypt.compare(userData.Password, user.Password).then((status) => {
+          //console.log(status);
+          if (status) {
+            console.log("login success");
+            response.user = user;
+            response.status = true;
+            resolve(response);
+          } else {
+            console.log("login failed incurrect pasword");
+            resolve({ status: false });
+          }
+        });
+      } else {
+        console.log("login failed");
+        resolve({ status: false });
+      }
     });
   },
 

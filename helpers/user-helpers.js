@@ -420,7 +420,6 @@ module.exports = {
         .find()
         .toArray();
       resolve(users);
-      console.log(users);
     });
   },
 };

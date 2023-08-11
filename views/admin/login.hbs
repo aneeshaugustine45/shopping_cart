@@ -2,7 +2,7 @@
 
   <div class="col-md-6 m-auto">
     <h2 class="text-center">login</h2>
-    <form action="/login" method="post">
+    <form action="/admin/login" method="post">
       <div class="form-group">
         <label for="Email">Email address</label>
         {{#if loginErr}}
@@ -24,10 +24,9 @@
           placeholder="Password"
         />
       </div>
-      <a href="/signup">create new account ?</a>
       <button
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-dark"
         style="float: right;"
       >login</button>
     </form>

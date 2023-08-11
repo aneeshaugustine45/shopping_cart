@@ -21,12 +21,37 @@
             <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/admin/">All orders</a>
+          <a class="nav-link" href="/admin/all-orders">All orders</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/admin/all-users">All users</a>
         </li>
       </ul>
+            <div class="dropdown">
+        <button
+          class="btn btn-info dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+
+          {{#if admin}}
+            {{admin.name}}
+          {{else}}
+            Account
+          {{/if}}
+
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {{#if admin}}
+            <a class="dropdown-item" href="/admin/logout">logout</a>
+          {{else}}
+            <a class="dropdown-item" href="/admin/login">login</a>
+          {{/if}}
+        </div>
+      </div>
 
     </div>
   </nav>
