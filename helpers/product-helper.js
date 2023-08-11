@@ -93,5 +93,17 @@ module.exports = {
       }
     });
   },
+  getAllOrder:()=> {
+    return new Promise(async (resolve, reject) => {
+      let order = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .find()
+        .toArray();
+      console.log(order);
+      console.log(order[0]);
+      resolve(order);
+    });
+  },
 
 };

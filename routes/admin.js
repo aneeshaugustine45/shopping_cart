@@ -22,7 +22,7 @@ router.get("/", varifyAdmin, function (req, res, next) {
   });
 });
 router.get("/add-product", varifyAdmin, function (req, res) {
-  res.render("admin/add-product");
+  res.render("admin/add-product", { admin: true});
 });
 router.post("/add-product", varifyAdmin, (req, res) => {
   productHelprer.addProduct(req.body, (id) => {
@@ -74,6 +74,15 @@ router.get("/all-users", varifyAdmin, function (req, res, next) {
     res.render("admin/view-all-users", { admin: true, users });
   });
 });
+
+router.get("/all-orders", varifyAdmin, function (req, res, next) {
+  productHelprer.getAllOrder().then((order) => {
+    //console.log(produtcs);
+    res.render("admin/view-all-orders", { admin: true, order });
+  });
+});
+
+
 router.get("/login", (req, res) => {
   if (req.session.admin) {
     res.redirect("/");
