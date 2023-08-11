@@ -5,7 +5,7 @@ const state = {
 };
 
 module.exports.connect = function (done) {
-  const url = "mongodb://127.0.0.1:27777/shopping";
+  const url = "mongodb://127.0.0.1:27017/shopping";
   const dbname = "shopping";
 
   mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
