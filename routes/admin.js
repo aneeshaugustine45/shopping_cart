@@ -5,6 +5,7 @@ const { Admin } = require("mongodb");
 const productHelper = require("../helpers/product-helper");
 const { response } = require("../app");
 const userHelpers = require("../helpers/user-helpers");
+const { log } = require("handlebars/runtime");
 
 const varifyAdmin = (req, res, next) => {
   if (req.session.admin) {
@@ -109,6 +110,24 @@ router.get("/logout", (req, res) => {
   console.log("ad login");
   req.session.admin = null;
   res.redirect("/admin");
+});
+router.get("/add-details",varifyAdmin,(req,res)=>{
+  res.render("admin/add-banner",{ admin: true})
+});
+router.post("/add-banner",varifyAdmin,(req,res)=>{
+  productHelprer.addBanner(req.body, (id) => {
+  console.log(req.body);
+  let image = req.files.image;
+  image.mv("./public/images/" + id + ".jpg", (err, done) => {
+    if (!err) {
+      res.redirect("/admin/");
+      console.log("banner added");
+    } else {
+      console.log(err);
+      res.render(err);
+    }
+  });
+  })
 });
 
 module.exports = router;

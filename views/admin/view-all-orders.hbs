@@ -1,6 +1,6 @@
 <section>
   <div class="container-fluid ">
-    <table class="table mt-5 table-hover table-responsive-xl">
+    <table class="table mt-5 table-hover table-responsive-xl" id="order-table">
       <thead>
         <tr>
           <th scope="col">date:</th>
@@ -10,6 +10,7 @@
           <th scope="col">Amount</th>
           <th scope="col">payment</th>
           <th scope="col">status</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -34,3 +35,7 @@
     </table>
   </div>
 </section>
+<script>
+  $(document).ready( function () { $('#order-table').DataTable(); } );
+
+</script>

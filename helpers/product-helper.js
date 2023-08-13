@@ -16,6 +16,16 @@ module.exports = {
         callback(data.insertedId);
       });
   },
+
+  addBanner:(banner, callback) => {
+    db.get()
+      .collection(collection.BANNER_COLLECTION)
+      .insertOne(banner)
+      .then((data) => {
+        callback(data.insertedId);
+      });
+  },
+
   getAllProducts: () => {
     return new Promise(async (resolve, reject) => {
       let products = await db
@@ -24,6 +34,16 @@ module.exports = {
         .find()
         .toArray();
       resolve(products);
+    });
+  },
+  getAllBanner:() => {
+    return new Promise(async (resolve, reject) => {
+      let banner = await db
+        .get()
+        .collection(collection.BANNER_COLLECTION)
+        .find()
+        .toArray();
+      resolve(banner);
     });
   },
   deleteProduct: (proId) => {

@@ -24,17 +24,20 @@ router.get("/", async function (req, res, next) {
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
+    banner= await productHelprer.getAllBanner()
+    console.log(banner);
   productHelprer.getAllProducts().then((products) => {
     //console.log("all products"); console.log(produtcs);
-    res.render("user/view-products", { products: products, user, cartCount });
+    res.render("user/view-products", { products: products, user, cartCount,banner});
   });
 });
 router.get("/login", (req, res) => {
   if (req.session.user) {
     res.redirect("/");
   } else {
-    res.render("user/login", { 
-    loginErr: req.session.userLoginErr });
+    res.render("user/login", {
+      loginErr: req.session.userLoginErr,
+    });
     req.session.userLoginErr = false;
   }
 });
@@ -159,13 +162,13 @@ router.post("/verify-payment", (req, res) => {
   userHelpers
     .verifyPayment(req.body)
     .then(() => {
-      userHelpers.changePaymentStatus(req.body['order[receipt]']).then(() => {
+      userHelpers.changePaymentStatus(req.body["order[receipt]"]).then(() => {
         console.log("payment succssfull");
         res.json({ status: true });
       });
     })
     .catch((err) => {
-      console.log("err "+err);
+      console.log("err " + err);
       res.json({ status: false });
     });
 });
