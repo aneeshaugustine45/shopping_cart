@@ -96,7 +96,6 @@ module.exports = {
         .findOne({ Email: userData.Email });
       if (user) {
         bcrypt.compare(userData.Password, user.Password).then((status) => {
-          //console.log(status);
           if (status) {
             console.log("login success");
             response.user = user;
