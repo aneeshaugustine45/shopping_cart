@@ -107,7 +107,6 @@ router.post("/login", (req, res) => {
   });
 });
 router.get("/logout", (req, res) => {
-  console.log("ad login");
   req.session.admin = null;
   res.redirect("/admin");
 });
@@ -128,6 +127,19 @@ router.post("/add-banner",varifyAdmin,(req,res)=>{
     }
   });
   })
+});
+// admin login
+router.get("/superadmin", (_req, res) => {
+  res.render("admin/superadmin");
+});
+router.post("/superadmin", (req, res) => {
+  console.log("singup");
+  productHelper.adminSignup(req.body).then((response) => {
+    //console.log(response);
+    req.session.admin = response;
+    req.session.admin.loggedIn = true;
+    res.redirect("/admin");
+  });
 });
 
 module.exports = router;

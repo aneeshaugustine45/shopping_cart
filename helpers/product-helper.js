@@ -86,6 +86,19 @@ module.exports = {
         })
     });
   },
+  adminSignup: (userData) => {
+    return new Promise(async (resolve, reject) => {
+      userData.Password = await bcrypt.hash(userData.Password, 10);
+      //console.log(userData); // data is here
+      db.get()
+        .collection(collection.ADMIN_COLLECTION)
+        .insertOne(userData)
+        .then((data) => {
+          // Resolving the promise with the inserted data
+          resolve(data); //this is not working
+        });
+    });
+  },
   adminlogin: (userData) => {
     return new Promise(async (resolve, reject) => {
       let loginStatus = false;
@@ -96,7 +109,6 @@ module.exports = {
         .findOne({ Email: userData.Email });
       if (user) {
         bcrypt.compare(userData.Password, user.Password).then((status) => {
-          //console.log(status);
           if (status) {
             console.log("login success");
             response.user = user;
@@ -120,10 +132,9 @@ module.exports = {
         .collection(collection.ORDER_COLLECTION)
         .find()
         .toArray();
-      console.log(order);
-      console.log(order[0]);
+     // console.log(order);
+     // console.log(order[0]);
       resolve(order);
     });
   },
-
 };
