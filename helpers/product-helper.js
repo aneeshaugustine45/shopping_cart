@@ -137,5 +137,4 @@ module.exports = {
       resolve(order);
     });
   },
-
 };
