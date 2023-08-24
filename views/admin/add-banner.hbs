@@ -1,32 +1,31 @@
-<section>
-  <div class="container">
-    <div class="col-md-6" >
+<section style="margin: auto; width:50%">
+  <div class="container" >
       <h2 class="text-center">add banner</h2>
-      <form
+      <form 
         action="/admin/add-banner"
         method="post"
         enctype="multipart/form-data"
       >
+      <div class="form-group">
         <label for="">name</label>
-        <input type="text" name="name" class="form-control" />
-
+        <input type="text" name="name" class="form-control" required="true" />
+        </div>
+       <div class="form-group">
         <label for="">image</label>
-        <input type="file" name="image" class="form-control" />
-
+        <input type="file" name="image" class="form-control" required="true" />
         <button type="submit" class="btn btn-success mt-4">submit</button>
-
+       </div>
       </form>
-    </div>
-
   </div>
+  </Section>
 <section>
-{{#each banner}}
-  <div class="text-center">
+  <div class="text-center scroll-container">
+    {{#each banner}}
     <img
-      class="rounded"
-      src="/images/banner/{{this._id}}.jpg"
+      class="rounded" style="max-width: 50%; max-height:250px;"
+      src="/banner-images/{{this._id}}.jpg"
       alt="First slide"
     />
+      {{/each}}
   </div>
-  {{/each}}
 </section>

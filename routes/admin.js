@@ -119,7 +119,7 @@ router.post("/add-banner",varifyAdmin,(req,res)=>{
   productHelprer.addBanner(req.body, (id) => {
   console.log(req.body);
   let image = req.files.image;
-  image.mv("./public/banner-images" + id + ".jpg", (err, done) => {
+  image.mv("./public/banner-images/" + id + ".jpg", (err, done) => {
     if (!err) {
       res.redirect("/admin/");
       console.log("banner added");

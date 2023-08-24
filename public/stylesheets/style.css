@@ -22,3 +22,13 @@ body {
   padding-left: 35px;
   text-align: left;
 }
+div.scroll-container {
+  overflow: auto;
+  white-space: nowrap;
+  padding: 2px;
+
+}
+
+div.scroll-container img {
+  padding: 2px;
+}
