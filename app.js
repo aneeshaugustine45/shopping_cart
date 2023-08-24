@@ -41,7 +41,13 @@ app.engine(
 );
 
 app.use(fileUpload());
-app.use(session({secret:"key",cookie:{maxAge:6000000}}))
+app.use(session({
+  secret:"key",
+  cookie:{maxAge:6000000},
+  resave: false, // Set this to true or false based on your needs
+  saveUninitialized: true, // You should also set this option
+  // Other session options...
+}));
 
 db.connect((err) => {
   if (err) console.log("database connection error" + err);
