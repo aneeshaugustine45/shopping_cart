@@ -110,14 +110,16 @@ router.get("/logout", (req, res) => {
   req.session.admin = null;
   res.redirect("/admin");
 });
-router.get("/add-details",varifyAdmin,(req,res)=>{
-  res.render("admin/add-banner",{ admin: true})
+router.get("/add-details",varifyAdmin,async (req,res)  =>{
+  banner= await productHelprer.getAllBanner()
+
+  res.render("admin/add-banner",{ admin: true ,banner})
 });
 router.post("/add-banner",varifyAdmin,(req,res)=>{
   productHelprer.addBanner(req.body, (id) => {
   console.log(req.body);
   let image = req.files.image;
-  image.mv("./public/images/" + id + ".jpg", (err, done) => {
+  image.mv("./public/banner-images/" + id + ".jpg", (err, done) => {
     if (!err) {
       res.redirect("/admin/");
       console.log("banner added");

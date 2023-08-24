@@ -3,3 +3,4 @@ routes/admin.js
 public/product-images/
 public/banner-images/
 .vscode
+public\product-images
