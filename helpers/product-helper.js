@@ -137,4 +137,18 @@ module.exports = {
       resolve(order);
     });
   },
+
+  deleteBanner: (bannerId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.BANNER_COLLECTION)
+        .deleteOne({ _id: new ObjectId(bannerId)})
+        .then((response) => {
+          console.log(response);
+          resolve(response);
+        });
+    });
+  },
+
+
 };

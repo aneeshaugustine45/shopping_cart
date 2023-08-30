@@ -6,6 +6,8 @@ const productHelper = require("../helpers/product-helper");
 const { response } = require("../app");
 const userHelpers = require("../helpers/user-helpers");
 const { log } = require("handlebars/runtime");
+const fs = require('fs');
+
 
 const varifyAdmin = (req, res, next) => {
   if (req.session.admin) {
@@ -42,6 +44,15 @@ router.post("/add-product", varifyAdmin, (req, res) => {
 router.get("/delete-product/:id", varifyAdmin, (req, res) => {
   let proId = req.params.id;
   productHelper.deleteProduct(proId).then((response) => {
+    try {
+      fs.rmSync("./public/product-images/" + proId + ".jpg", {
+        force: true,
+      });
+      console.log("File deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting file:", error);
+    }
+    
     res.redirect("/admin/");
   });
 });
@@ -141,6 +152,22 @@ router.post("/superadmin", (req, res) => {
     req.session.admin = response;
     req.session.admin.loggedIn = true;
     res.redirect("/admin");
+  });
+});
+
+
+router.get("/delete-Banner/:id", varifyAdmin, (req, res) => {
+  let bannerId = req.params.id;
+  productHelper.deleteBanner(bannerId).then((response) => {
+    try {
+      fs.rmSync("./public/banner-images/" + bannerId + ".jpg", {
+        force: true,
+      });
+      console.log("File deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting file:", error);
+    }
+    res.redirect("/admin/add-details");
   });
 });
 
