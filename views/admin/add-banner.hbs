@@ -21,11 +21,19 @@
 <section>
   <div class="text-center scroll-container">
     {{#each banner}}
+    <div>
     <img
       class="rounded" style="max-width: 50%; max-height:250px;"
       src="/banner-images/{{this._id}}.jpg"
-      alt="First slide"
-    />
+      alt="banner image"/>
+      <div>
+      <a
+      href="/admin/delete-banner/{{this._id}}"
+      class="btn btn-danger"
+      onclick="return confirm('are you want to delete {{this.name}}')"
+      >Delete</a>
+      </div>
+    </div>
       {{/each}}
   </div>
 </section>

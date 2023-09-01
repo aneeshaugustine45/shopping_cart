@@ -62,3 +62,6 @@ function removeCart(cartId,proId) {
   });
 }
 
+function getYear() {
+  return new Date().getFullYear();
+}
