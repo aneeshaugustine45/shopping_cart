@@ -1,8 +1,4 @@
-{  "engines": {
-    "node": ">=18.17.1 <18.17.1"
-  },
-
-
+{
   "name": "shopping-cart",
   "version": "1.0.0",
   "private": true,
